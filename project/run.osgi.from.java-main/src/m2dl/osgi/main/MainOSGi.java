@@ -11,7 +11,7 @@ import org.osgi.framework.BundleException;
 
 public class MainOSGi {
 
-	private static final String ECLIPSE_RCP_INSTALLED_PATH = "~/eclipse/eclipse-rcp/";
+	private static final String ECLIPSE_RCP_INSTALLED_PATH = System.getProperty("user.home") + "/eclipse/eclipse-rcp/";
 
 	private static BundleContext bundleContext;
 
@@ -29,7 +29,6 @@ public class MainOSGi {
 	}
 
 	public static void main(String[] args) {
-
 		startOSGiFramework();
 
 		//installAndStartBundle("/tmp/plugins/m2dl.osgi.editor_1.0.0.jar");

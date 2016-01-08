@@ -11,7 +11,7 @@ import org.osgi.framework.BundleException;
 
 public class MainOSGi {
 
-	private static final String ECLIPSE_RCP_INSTALLED_PATH = "/home/florent/eclipse/eclipse-rcp-mars";
+	private static final String ECLIPSE_RCP_INSTALLED_PATH = "~/eclipse/eclipse-rcp/";
 
 	private static BundleContext bundleContext;
 

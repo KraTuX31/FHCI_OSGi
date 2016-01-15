@@ -158,7 +158,7 @@ Les radioboutons 'CSS bundle' et 'Java bundle' permettent de démarrer ou arrêt
 
 === Gestion de la coloration syntaxique
 
-Pour afficher le code source des fichier avec de la couleur vous utiliserez le composant _webView_ (déjà intégré dans l'IHM du programme) qui interprète et affiche des documents HTML.
+Pour afficher le code source des fichiers avec de la couleur vous utiliserez le composant _webView_ (déjà intégré dans l'IHM du programme) qui interprète et affiche des documents HTML.
 Vous allez donc devoir transformer un code source en document HTML pour pouvoir l'afficher correctement dans le visualisateur de code.
 
 *Exemple :*
@@ -184,8 +184,8 @@ Pour gérer la coloration syntaxique, voici la méthode en employer :
 
  - *1/* après l'ouverture d'un fichier source, décorer les mots clés du fichier par des balises que vous définirez. Par exemple, pour un fichier Java, vous allez entourer les mots "class" avec la balise ":keyword{ ... }" et les commentaires par la balise ":comment{ ... }". L'objectif de cette étape est d'identifier les parties clés du langage qui doivent être affichées avec de la couleur. Dans l'exemple précèdent cela donnerai :
 
- :keyword{package} activator;
- :keyword{public class} Activator :keyword{implements} BundleActivator {
+ :keyword{~package~} activator;
+ :keyword{~public class~} Activator :keyword{~implements~} BundleActivator {
  }
 
  - *2/* récupération de la chaîne de caractère qui contient le fichier avec vos balises. Dans cette étape pour devrez transformer vos balises en code HTML comme montré dans l'exemple ci-dessus.
@@ -196,7 +196,7 @@ Pour réaliser les deux étapes, vous utiliserez des expressions régulières...
 Vous devrez donc développer 3 bundle :
 
  - un pour réaliser la première étape, il contient la logique du logiciel. Il devra placer ses balises selon si le fichier ouvert est du Java ou du CSS.
- - un pour s'occuper de l'affichage de fichiers HTML
+ - un pour s'occuper de l'affichage de fichiers Java
  - un pour s'occuper de l'affichage de fichiers CSS
 
 === Contraintes
@@ -214,3 +214,24 @@ Vous devrez donc développer 3 bundle :
  - Il faut pouvoir installer et lancer les bundles dans n'importe quel ordre. Pour vous aider, regardez la méthode 'installAndStartBundle' (ligne 18) du main du projet _run.osgi.from.java-main_.
  - Vous serez noté sur votre capacité à développer des bundles, pas sur votre capacité à colorer l'ensemble des mots des fichiers ouverts. Concentrez vous donc en priorité sur les bundles plutôt que sur l'algorithme de coloration.
  - Have fun !
+
+=== Conseils pour la réalisation du projet
+
+Je vous conseille de réaliser le projet dans cet ordre :
+
+ - *1/* Implémenter les actions simples de l'IHM (Fichier -> ouvrir, fermer, quitter) ;
+ - *2/* Voir comment fonctionne le composant _webView_ en codant directement dans l'IHM une coloration syntaxique simple : par exemple afficher en rouge les mots clés « _class_ » ;
+ - *3/* Réfléchir à l'organisation des trois bundles à développer. Ce qui comprend la réponse aux questions :
+   * Quels sont les interfaces fournies ?
+   * Quels sont les interfaces requises ?
+   * Où sont placées les interfaces (dans quels bundles) ?
+   * Quels sont les services rendus ?
+   * Quels bundles utilisent ces sercices ?
+   * N'hésitez pas à faire plusieurs schémas pour bien vous représenter l'architecture de votre solution !
+ - *4/* Implémenter et tester un des deux bundles chargé de la coloration syntaxique. En résumé, déplacer le code qui vous a permi de tester le composant _webView_ dans ce nouveau bundle ;
+ - *5/* Implémenter le bundle qui permet d'identifier les mots clés du fichier ouvert avec vos propres balises ;
+ - *6/* Modifier le code de votre premier bundle pour qu'il suppuie sur votre bundle d'identification des mots clés mots clés des fichiers ouverts ;
+ - *7/* Développer le dernier bundle ;
+ - *8/* Maintenant que tous vos bundles fonctionnent, compléter les dernières actions de l'IHM (Bundle OSGi -> Load bundle, Decorator bundle, CSS bundle, Java bundle) ;
+ - *9/* Modifier le projet _run.osgi.from.java-main_ pour fournir un programme Java qui permet d'exécuter le plateforme OSGi et de lancer le bundle contenant l'IHM.
+ - *10/* N'oubliez pas que le plus gros bug que vous aurez à résoudre se trouve entre votre chaise et votre clavier ;)

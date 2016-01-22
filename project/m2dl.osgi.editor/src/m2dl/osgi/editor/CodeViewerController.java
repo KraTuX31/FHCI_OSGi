@@ -1,6 +1,7 @@
 package m2dl.osgi.editor;
 
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -11,10 +12,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.RadioMenuItem;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
+import javafx.scene.web.WebEngine;
 import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import m2dl.osgi.editor.util.UtilFiles;
 
 public class CodeViewerController {
 
@@ -124,7 +127,24 @@ public class CodeViewerController {
 		} else {
 			Activator.logger.info("File selection cancelled.");
 		}
+		
+		WebEngine webEngine = webViewer.getEngine();
+		//webEngine.loadData(yourData, "text/html", "UTF-8");
+		
+		//webEngine.loadContent("toto<br/>super toto!<br/> ahahahah");
+		  ;
+		try {
+			webEngine.loadContent(UtilFiles.fileToHtmlString(selectedFile));
+			//webEngine.loadContent();
+			//webEngine.
+		} catch (IOException e) {
+			System.err.println("Pas youhou du tout ça !");
+			e.printStackTrace();
+		}
+		webEngine.reload();
 	}
+	
+	
 
 	@FXML
 	void fireRadioMenuCSS(ActionEvent event) {

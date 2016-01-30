@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.atomic.LongAdder;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -82,16 +83,13 @@ public class CodeViewerController {
 
 	@FXML
 	void fireMenuCloseFile(ActionEvent event) {
-		/*
-		 * TODO close the opened file. The web viewer have to be clean.
-		 */
+		WebEngine webEngine = webViewer.getEngine();
+		webEngine.loadContent("");
 	}
 
 	@FXML
 	void fireMenuExit(ActionEvent event) {
-		/*
-		 * TODO Close the window.
-		 */
+		System.exit(0);
 	}
 
 	/**

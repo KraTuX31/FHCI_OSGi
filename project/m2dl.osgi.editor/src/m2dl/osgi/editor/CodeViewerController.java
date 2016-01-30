@@ -158,22 +158,7 @@ public class CodeViewerController {
 		 * If the css bundle is stated -> stop it otherwise start it (if it has
 		 * been loaded before)
 		 */
-		for(Bundle b : context.getBundles()) {
-			if(b.getSymbolicName().toLowerCase().contains("css")) {
-				try {
-					if(b.getState() == Bundle.ACTIVE) {
-						b.start();
-
-					} else {
-						b.stop();
-					}
-					return;
-				} catch (BundleException e) {
-					Activator.logger.error("Error on toggling css bundle");
-				}					
-			}
-		}
-		Activator.logger.error("There is no css bundle installed");
+		toggleStatusBundle("css");
 	}
 
 	@FXML
@@ -182,8 +167,13 @@ public class CodeViewerController {
 		 * If the decorator bundle is stated -> stop it otherwise start it (if
 		 * it has been loaded before)
 		 */
+		toggleStatusBundle("decorator");
+	}
+
+	private void toggleStatusBundle(String bundle) {
 		for(Bundle b : context.getBundles()) {
-			if(b.getSymbolicName().toLowerCase().contains("decorator")) {
+			String s = b.getSymbolicName();
+			if(s != null && s.toLowerCase().contains("decorator")) {
 				try {
 					if(b.getState() == Bundle.ACTIVE) {
 						b.start();
@@ -198,32 +188,15 @@ public class CodeViewerController {
 			}
 		}
 		Activator.logger.error("There is no decorator bundle installed");
-		
 	}
-
+	
 	@FXML
 	void fireRadioMenuJava(ActionEvent event) {
 		/*
-		 * If the css bundle is stated -> stop it otherwise start it (if it has
+		 * If the java bundle is stated -> stop it otherwise start it (if it has
 		 * been loaded before)
 		 */
-		for(Bundle b : context.getBundles()) {
-			if(b.getSymbolicName().toLowerCase().contains("java")) {
-				try {
-					if(b.getState() == Bundle.ACTIVE) {
-						b.start();
-
-					} else {
-						b.stop();
-					}
-					return;
-				} catch (BundleException e) {
-					Activator.logger.error("Error on toggling java bundle");
-				}					
-			}
-		}
-		Activator.logger.error("There is no java bundle installed");
-
+		toggleStatusBundle("java");
 	}
 
 	@FXML

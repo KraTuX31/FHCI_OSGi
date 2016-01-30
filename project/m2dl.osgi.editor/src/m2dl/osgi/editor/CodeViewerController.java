@@ -83,9 +83,7 @@ public class CodeViewerController {
 
 	@FXML
 	void fireMenuExit(ActionEvent event) {
-		/*
-		 * TODO Close the window.
-		 */
+		System.exit(0);
 	}
 
 	/**

@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.LongAdder;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
@@ -26,7 +25,6 @@ import m2dl.osgi.editor.util.UtilFiles;
 
 public class CodeViewerController {
 	private BundleContext context;
-	
 	
 	/**
 	 * The main window of the application.
@@ -160,6 +158,22 @@ public class CodeViewerController {
 		 * If the css bundle is stated -> stop it otherwise start it (if it has
 		 * been loaded before)
 		 */
+		for(Bundle b : context.getBundles()) {
+			if(b.getSymbolicName().toLowerCase().contains("css")) {
+				try {
+					if(b.getState() == Bundle.ACTIVE) {
+						b.start();
+
+					} else {
+						b.stop();
+					}
+					return;
+				} catch (BundleException e) {
+					Activator.logger.error("Error on toggling css bundle");
+				}					
+			}
+		}
+		Activator.logger.error("There is no css bundle installed");
 	}
 
 	@FXML
@@ -168,14 +182,48 @@ public class CodeViewerController {
 		 * If the decorator bundle is stated -> stop it otherwise start it (if
 		 * it has been loaded before)
 		 */
+		for(Bundle b : context.getBundles()) {
+			if(b.getSymbolicName().toLowerCase().contains("decorator")) {
+				try {
+					if(b.getState() == Bundle.ACTIVE) {
+						b.start();
+
+					} else {
+						b.stop();
+					}
+					return;
+				} catch (BundleException e) {
+					Activator.logger.error("Error on toggling decorator bundle");
+				}					
+			}
+		}
+		Activator.logger.error("There is no decorator bundle installed");
+		
 	}
 
 	@FXML
 	void fireRadioMenuJava(ActionEvent event) {
 		/*
-		 * If the Java bundle is stated -> stop it otherwise start it (if it has
+		 * If the css bundle is stated -> stop it otherwise start it (if it has
 		 * been loaded before)
 		 */
+		for(Bundle b : context.getBundles()) {
+			if(b.getSymbolicName().toLowerCase().contains("java")) {
+				try {
+					if(b.getState() == Bundle.ACTIVE) {
+						b.start();
+
+					} else {
+						b.stop();
+					}
+					return;
+				} catch (BundleException e) {
+					Activator.logger.error("Error on toggling java bundle");
+				}					
+			}
+		}
+		Activator.logger.error("There is no java bundle installed");
+
 	}
 
 	@FXML
@@ -194,5 +242,8 @@ public class CodeViewerController {
 	public void setContext(final BundleContext bundle) {
 		this.context = bundle;
 	}
-
+	
+	
+	public CodeViewerController() {
+	}
 }

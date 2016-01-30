@@ -5,6 +5,10 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.BundleException;
+
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
@@ -20,7 +24,9 @@ import javafx.stage.Stage;
 import m2dl.osgi.editor.util.UtilFiles;
 
 public class CodeViewerController {
-
+	private BundleContext context;
+	
+	
 	/**
 	 * The main window of the application.
 	 */
@@ -98,11 +104,15 @@ public class CodeViewerController {
 		final FileChooser fileChooser = new FileChooser();
 		final File selectedFile = fileChooser.showOpenDialog(primaryStage);
 
-		/*
-		 * TODO complete this section to load the selected bundle.
-		 */
 		if (selectedFile != null) {
-			Activator.logger.info("File selected: " + selectedFile.getName());
+			Bundle myBundle;
+			try {
+				myBundle = context.installBundle(selectedFile.toURI().toString());
+				myBundle.start();
+				Activator.logger.info("The bundle " + selectedFile + " installed and started");
+			} catch (final BundleException e) {
+				Activator.logger.error("Error on bundle loading. Action aborted.");
+			}
 		} else {
 			Activator.logger.info("File selection cancelled.");
 		}
@@ -181,6 +191,10 @@ public class CodeViewerController {
 
 	public void setPrimaryStage(final Stage _stage) {
 		primaryStage = _stage;
+	}
+	
+	public void setContext(final BundleContext bundle) {
+		this.context = bundle;
 	}
 
 }

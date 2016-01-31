@@ -5,9 +5,11 @@ import m2dl.osgi.apidecoratorbundle.LanguageDecoratorService;
 public class CssDecorator implements LanguageDecoratorService {
 	// Only some keywoards, we cnn add more
 	private static final String[] KEY_WORDS = 
-		{"color", "margin", "height", "image", "border", "max", "radius", "min", "position", "background", "width", "padding", "font", "@media", "display", "text-align"};
+		{"color", "margin", "height", "image", "border", "max", "radius", 
+			"min", "position", "background", "width", "padding", "font", 
+			"@media", "display", "text-align"};
 
-	private static final String keyColor = "#7f0055";
+	private static final String keyColor = "#2E64FE";
 	private static final String commentColor = "grey";
 	
 	private String key(String key) {
@@ -22,11 +24,14 @@ public class CssDecorator implements LanguageDecoratorService {
 	@Override
 	public String htmlColorString(String markupString) {
 		String ret = markupString;
-		ret = ret.replaceAll(":comment\\{(/\\*.*\\*/)\\}", "<font color=\""+commentColor+"\">$1</font>");
+		ret = ret.replaceAll(
+				":comment\\{(/\\*.*\\*/)\\}", 
+				"<font color=\""+commentColor+"\">$1</font>");
 
-		ret = ret.replaceAll(":keyword\\{([a-zA-z0-9\\-@]+)\\}", "<b><font color=\""+keyColor+"\">$1</font></b>");
-		return ret
-				;
+		ret = ret.replaceAll(
+				":keyword\\{([a-zA-z0-9\\-@]+)\\}", 
+				"<b><font color=\""+keyColor+"\">$1</font></b>");
+		return ret;
 	}
 	
 	/**

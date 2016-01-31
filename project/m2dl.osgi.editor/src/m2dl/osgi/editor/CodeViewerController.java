@@ -104,15 +104,7 @@ public class CodeViewerController {
 		final File selectedFile = fileChooser.showOpenDialog(primaryStage);
 
 		if (selectedFile != null) {
-			Bundle myBundle;
-			try {
-				myBundle = Activator.context.installBundle(selectedFile.toURI().toString());
-				myBundle.start();
-
-				Activator.logger.info("The bundle " + selectedFile + " installed and started");
-			} catch (final BundleException e) {
-				Activator.logger.error("Error on bundle loading. Action aborted.");
-			}
+			deco.loadBundle(selectedFile);
 		} else {
 			Activator.logger.info("File selection cancelled.");
 		}
@@ -147,7 +139,7 @@ public class CodeViewerController {
 		 * If the css bundle is stated -> stop it otherwise start it (if it has
 		 * been loaded before)
 		 */
-		toggleStatusBundle("css");
+		deco.toggleCss();
 	}
 
 	@FXML
@@ -157,10 +149,6 @@ public class CodeViewerController {
 		 * it has been loaded before)
 		 */
 		toggleStatusBundle("decorator");
-		
-	
-
-
 	}
 
 	private void toggleStatusBundle(String bundle) {
@@ -189,7 +177,7 @@ public class CodeViewerController {
 		 * If the java bundle is stated -> stop it otherwise start it (if it has
 		 * been loaded before)
 		 */
-		toggleStatusBundle("java");
+		deco.toggleJava();
 	}
 
 	@FXML

@@ -7,10 +7,11 @@ public class CssDecorator implements LanguageDecoratorService {
 	private static final String[] KEY_WORDS = 
 		{"color", "margin", "height", "image", "border", "max", "radius", 
 			"min", "position", "background", "width", "padding", "font", 
-			"@media", "display", "text-align"};
+			"@media", "display", "align", "left", "right", "collapse", "family", "z-index", "text", "overflow", "top", "transform", "letter", "spacing", "size", "decoration"};
 
 	private static final String keyColor = "#2E64FE";
 	private static final String commentColor = "grey";
+	private static final String quoteColor = "red";
 	
 	private String key(String key) {
 		return key.replace(key, ":keyword{"+key+"}");
@@ -31,6 +32,10 @@ public class CssDecorator implements LanguageDecoratorService {
 		ret = ret.replaceAll(
 				":keyword\\{([a-zA-z0-9\\-@]+)\\}", 
 				"<b><font color=\""+keyColor+"\">$1</font></b>");
+		
+		ret = ret.replaceAll(
+				":quote\\{(.+)\\}", 
+				"<i><font color=\""+quoteColor+"\">$1</font></i>");
 		return ret;
 	}
 	
@@ -48,6 +53,9 @@ public class CssDecorator implements LanguageDecoratorService {
 		
 		// Comments replacing
 		ret = ret.replaceAll("(/\\*.*?\\*/)", ":comment{$1}");
+		
+		// Quote replacing 
+		ret = ret.replaceAll("(\'[\\#\\./A-Za-z0-9\\-&nbsp;]+\')", ":quote{$1}");
 		return ret;
 	}
 

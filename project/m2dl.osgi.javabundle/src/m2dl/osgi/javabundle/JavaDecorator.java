@@ -33,7 +33,7 @@ public class JavaDecorator implements LanguageDecoratorService {
 	public String htmlColorString(String raw) {
 		String ret = raw;
 		ret = ret.replaceAll(
-				":comment\\{(//[a-zA-Z0-9\\- ]+)\\}", 
+				":comment\\{(//[a-zA-Z0-9-&nbsp;]+)\\}", 
 				"<font color=\""+commentColor+"\">$1</font>");
 
 		ret = ret.replaceAll(
@@ -56,14 +56,16 @@ public class JavaDecorator implements LanguageDecoratorService {
 	public String rawTextToMarkupText(String raw) {
 		String ret = raw;
 		for(String s : KEY_WORDS) {
-			ret = ret.replace(s + " ", key(s) + " ");
+			ret = ret.replace(s+"&nbsp;", key(s)+"&nbsp;");
 			ret = ret.replace(s + "(", key(s) + "(");
 		}
 		
 		// Comments replacing
-		ret = ret.replaceAll("(//[a-zA-Z0-9\\- ]+)", ":comment{$1}");
+		ret = ret.replaceAll("(//[a-zA-Z0-9-&nbsp;]+)", ":comment{$1}");
 		
-		ret = ret.replaceAll("(\"[A-Za-z0-9\\- ]+\")", ":quote{$1}");
+		// Quote replacing 
+		ret = ret.replaceAll("(\"[A-Za-z0-9\\-&nbsp;]+\")", ":quote{$1}");
+		
 		// TODO add multilines comments
 		ret = ret.replaceAll("(\\/\\*+((([^\\*])+)|([\\*]+(?!\\/)))[*]+\\/)", 
 				":comment{$1}");

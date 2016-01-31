@@ -92,7 +92,7 @@ public class DecoratorServiceImplementation implements DecoratorService {
 	        String line = br.readLine();
 
 	        while (line != null) {
-	            sb.append(line);
+	            sb.append(line.replace("\t", "    ").replace(" ", "&nbsp;"));
 	            sb.append("\n<br/>");
 	            line = br.readLine();
 	        }
@@ -100,6 +100,7 @@ public class DecoratorServiceImplementation implements DecoratorService {
 	    } finally {
 	        br.close();
 	    }
+	    
 	    
 	    return ret+"";	   
 	}

@@ -14,6 +14,7 @@ import m2dl.osgi.apidecoratorbundle.LanguageDecoratorService;
 import m2dl.osgi.cssbundle.impl.CssDecorator;
 import m2dl.osgi.decorationbundle.DecoratorService;
 import m2dl.osgi.decorationbundle.activator.Activator;
+import m2dl.osgi.javabundle.JavaDecorator;
 
 public class DecoratorServiceImplementation implements DecoratorService {
 	@Override
@@ -25,31 +26,33 @@ public class DecoratorServiceImplementation implements DecoratorService {
 		}
 		
 		String rawContent = fileToHtmlString(f);
-		String markupContent = null;;
+		String markupContent = rawContent;
+		
+		// If it is a java file
 		if(f.getAbsolutePath().toLowerCase().endsWith(".java")) { // Java file !
 			Bundle b  = getBundleByPartName("java");
 			if(b!= null) {
-				LanguageDecoratorService service = getLanguageDecorationService(null, b);
+				LanguageDecoratorService service = getLanguageDecorationService(JavaDecorator.class, b);
+				markupContent = service.htmlColorString(rawContent);
 			}
-			// TODO call java decorator
 		} 
 		
+		// If it is a css file
 		if(f.getAbsolutePath().toLowerCase().endsWith(".css")) { // css file
 			Bundle b  = getBundleByPartName("css");
-			// TODO call css decorator
 			if(b!= null) {
 				LanguageDecoratorService service = getLanguageDecorationService(CssDecorator.class, b);
-				service.htmlColorString(rawContent);
+				markupContent = service.htmlColorString(rawContent);
 			}
 		} 
 		
-		 // Other file
-		if(markupContent == null) {
-			// TO HTML
-		}
+			
 		
-		
-		 return "";
+		 return markupToHTML(markupContent);
+	}
+	
+	private String markupToHTML(String content) {
+		return null;
 	}
 
 	@Override

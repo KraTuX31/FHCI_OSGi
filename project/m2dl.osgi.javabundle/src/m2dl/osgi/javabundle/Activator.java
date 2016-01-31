@@ -1,5 +1,8 @@
 package m2dl.osgi.javabundle;
 
+import java.util.Dictionary;
+import java.util.Hashtable;
+
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
@@ -10,7 +13,10 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
-		System.out.println("Welcome to Java World!!");
+		Dictionary<String, String> properties = new Hashtable<String, String>();
+		properties.put("type",  "good_property");
+		properties.put("name", "LanguageDecoratorService");
+		context.registerService(JavaDecorator.class.getName(), new JavaDecorator(), properties);
 	}
 	
 	/*

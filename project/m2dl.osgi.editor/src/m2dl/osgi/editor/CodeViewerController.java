@@ -8,6 +8,8 @@ import java.util.ResourceBundle;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,10 +23,11 @@ import javafx.scene.web.WebView;
 import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
-import m2dl.osgi.editor.util.UtilFiles;
+import m2dl.osgi.decorationbundle.DecoratorService;
+
 
 public class CodeViewerController {
-	private BundleContext context;
+	private DecoratorService deco;
 	
 	/**
 	 * The main window of the application.
@@ -103,8 +106,9 @@ public class CodeViewerController {
 		if (selectedFile != null) {
 			Bundle myBundle;
 			try {
-				myBundle = context.installBundle(selectedFile.toURI().toString());
+				myBundle = Activator.context.installBundle(selectedFile.toURI().toString());
 				myBundle.start();
+
 				Activator.logger.info("The bundle " + selectedFile + " installed and started");
 			} catch (final BundleException e) {
 				Activator.logger.error("Error on bundle loading. Action aborted.");
@@ -122,32 +126,17 @@ public class CodeViewerController {
 	@FXML
 	void fireMenuOpenFile(ActionEvent event) {
 		final FileChooser fileChooser = new FileChooser();
-		final File selectedFile = fileChooser.showOpenDialog(primaryStage);
-
-		/*
-		 * TODO complete this section to display the content of the file into
-		 * the webViewer.
-		 */
-		if (selectedFile != null) {
-			Activator.logger.info("File selected: " + selectedFile.getName());
-		} else {
-			Activator.logger.info("File selection cancelled.");
-		}
-		
-		WebEngine webEngine = webViewer.getEngine();
-		//webEngine.loadData(yourData, "text/html", "UTF-8");
-		
-		//webEngine.loadContent("toto<br/>super toto!<br/> ahahahah");
-		  ;
 		try {
-			webEngine.loadContent(UtilFiles.fileToHtmlString(selectedFile));
-			//webEngine.loadContent();
-			//webEngine.
+			String content = deco.decorate(fileChooser.showOpenDialog(primaryStage));
+			WebEngine webEngine = webViewer.getEngine();
+			webEngine.loadContent(content);
+		
+			webEngine.reload();
 		} catch (IOException e) {
-			System.err.println("Pas youhou du tout ça !");
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		webEngine.reload();
+
 	}
 	
 	
@@ -168,10 +157,14 @@ public class CodeViewerController {
 		 * it has been loaded before)
 		 */
 		toggleStatusBundle("decorator");
+		
+	
+
+
 	}
 
 	private void toggleStatusBundle(String bundle) {
-		for(Bundle b : context.getBundles()) {
+		for(Bundle b : Activator.context.getBundles()) {
 			String s = b.getSymbolicName();
 			if(s != null && s.toLowerCase().contains("decorator")) {
 				try {
@@ -183,7 +176,7 @@ public class CodeViewerController {
 					}
 					return;
 				} catch (BundleException e) {
-					Activator.logger.error("Error on toggling decorator bundle");
+					Activator.logger.error("Error on toggling decorator bundle : "+e.getMessage());
 				}					
 			}
 		}
@@ -212,11 +205,20 @@ public class CodeViewerController {
 		primaryStage = _stage;
 	}
 	
-	public void setContext(final BundleContext bundle) {
-		this.context = bundle;
+
+	private void setDecoService() {
+		ServiceReference<?>[] references;
+		try {
+			references = Activator.context.getServiceReferences( DecoratorService.class.getName(), "(type=good_property)");
+			deco = (( DecoratorService) Activator.context.getService(references[0]));
+		} catch (InvalidSyntaxException e) {
+			// TODO Auto-generated catch block
+			// Today, it's dirty time. Exceptions, see you later.
+			e.printStackTrace();
+		}
 	}
 	
-	
 	public CodeViewerController() {
+		setDecoService();
 	}
 }

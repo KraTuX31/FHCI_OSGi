@@ -2,8 +2,13 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Decorationbundle
 Bundle-SymbolicName: m2dl.osgi.decorationbundle
-Bundle-Version: 1.0.0.qualifier
-Bundle-Activator: m2dl.osgi.decorationbundle.Activator
+Bundle-Version: 1.0.0
+Bundle-Activator: m2dl.osgi.decorationbundle.activator.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Import-Package: org.osgi.framework;version="1.3.0"
+Import-Package: 
+ org.osgi.framework;version="1.3.0",
+ org.apache.log4j;version="1.2.15"
+ 
 Bundle-ActivationPolicy: lazy
+Export-Package: m2dl.osgi.decorationbundle;version="1.0.0"
+

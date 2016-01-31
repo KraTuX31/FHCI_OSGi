@@ -14,7 +14,8 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class Activator implements BundleActivator {
-
+	public static BundleContext context;
+	
 	/**
 	 * To know if the window is running.
 	 */
@@ -26,6 +27,7 @@ public class Activator implements BundleActivator {
 
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
+		context = bundleContext;
 		/*
 		 * Configuring the logger.
 		 */
@@ -52,7 +54,6 @@ public class Activator implements BundleActivator {
 					final CodeViewerController controller = loader.getController();
 
 					controller.setPrimaryStage(primaryStage);
-					controller.setContext(bundleContext);
 					/*
 					 * Setup the window
 					 */

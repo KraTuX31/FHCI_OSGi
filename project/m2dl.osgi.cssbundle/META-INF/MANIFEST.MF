@@ -7,3 +7,4 @@ Bundle-Activator: m2dl.osgi.cssbundle.Activator
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: org.osgi.framework;version="1.3.0"
 Bundle-ActivationPolicy: lazy
+Export-Package: m2dl.osgi.cssbundle;version="1.0.0"

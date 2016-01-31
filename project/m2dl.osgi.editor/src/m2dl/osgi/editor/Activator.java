@@ -28,6 +28,7 @@ public class Activator implements BundleActivator {
 	@Override
 	public void start(BundleContext bundleContext) throws Exception {
 		context = bundleContext;
+		System.out.println("toto");
 		/*
 		 * Configuring the logger.
 		 */

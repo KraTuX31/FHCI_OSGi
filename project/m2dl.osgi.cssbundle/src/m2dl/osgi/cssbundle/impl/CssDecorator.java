@@ -7,6 +7,9 @@ public class CssDecorator implements LanguageDecoratorService {
 	private static final String[] KEY_WORDS = 
 		{"color", "margin", "height", "position", "background", "width", "height", "padding", "font", "@media", "display", "text-align"};
 
+	private static final String keyColor = "#7f0055";
+	private static final String commentColor = "grey";
+	
 	private String key(String key) {
 		return key.replace(key, ":keyword{"+key+"}");
 	}
@@ -18,7 +21,10 @@ public class CssDecorator implements LanguageDecoratorService {
 	 */
 	@Override
 	public String htmlColorString(String markupString) {
-		return markupString;
+		String ret = markupString;
+		ret = ret.replaceAll(":keyword\\{([a-zA-z0-9]+)\\}", "<font color=\""+keyColor+"\">$1</font>");
+		ret = ret.replaceAll("(:comment\\{(.*)\\})", "<font color=\""+commentColor+"\">$1</font>");
+		return ret;
 	}
 	
 	/**
@@ -30,11 +36,11 @@ public class CssDecorator implements LanguageDecoratorService {
 	public String rawTextToMarkupText(String raw) {
 		String ret = raw;
 		for(String s : KEY_WORDS) {
-			ret = ret.replace(s, key(s));
+			ret = ret.replaceAll(s, key(s));
 		}
 		
 		// Comments replacing
-		// TODO add multine comments
+		ret = ret.replaceAll("(/\\*.*?\\*/)", ":comment{$1}");
 		return ret;
 	}
 

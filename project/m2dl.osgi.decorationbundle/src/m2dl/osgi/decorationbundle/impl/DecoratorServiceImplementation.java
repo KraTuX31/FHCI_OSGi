@@ -25,15 +25,15 @@ public class DecoratorServiceImplementation implements DecoratorService {
 			Activator.logger.info("File selection cancelled.");
 		}
 		
-		String rawContent = fileToHtmlString(f);
-		String markupContent = rawContent;
+		String rawContent = fileToHtmlString(f);		
+		String retHtmlContent = rawContent;
 		
 		// If it is a java file
 		if(f.getAbsolutePath().toLowerCase().endsWith(".java")) { // Java file !
 			Bundle b  = getBundleByPartName("java");
 			if(b!= null) {
 				LanguageDecoratorService service = getLanguageDecorationService(JavaDecorator.class, b);
-				markupContent = service.htmlColorString(rawContent);
+				retHtmlContent = rawToHtml(service, rawContent);
 			}
 		} 
 		
@@ -42,17 +42,20 @@ public class DecoratorServiceImplementation implements DecoratorService {
 			Bundle b  = getBundleByPartName("css");
 			if(b!= null) {
 				LanguageDecoratorService service = getLanguageDecorationService(CssDecorator.class, b);
-				markupContent = service.htmlColorString(rawContent);
+				// Add markup for css
+				retHtmlContent = rawToHtml(service, rawContent);
 			}
 		} 
 		
 			
 		
-		 return markupToHTML(markupContent);
+		 return retHtmlContent;
 	}
 	
-	private String markupToHTML(String content) {
-		return null;
+	private String rawToHtml(LanguageDecoratorService service, String rawContent) {
+		String markupContent = service.rawTextToMarkupText(rawContent);
+		
+		return service.htmlColorString(markupContent);
 	}
 
 	@Override

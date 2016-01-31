@@ -6,7 +6,6 @@ import java.util.Hashtable;
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
 
-import m2dl.osgi.apidecoratorbundle.LanguageDecoratorService;
 import m2dl.osgi.cssbundle.impl.CssDecorator;
 
 public class Activator implements BundleActivator {
@@ -19,6 +18,8 @@ public class Activator implements BundleActivator {
 		Dictionary<String, String> properties = new Hashtable<String, String>();
 		properties.put("type",  "good_property");
 		properties.put("name", "LanguageDecoratorService");
+
+		// Declaration of CSSDecorator
 		context.registerService(CssDecorator.class.getName(), new CssDecorator(), properties);
 	}
 	
@@ -27,7 +28,6 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		System.out.println("Goodbye CSS World!!");
 	}
 
 }

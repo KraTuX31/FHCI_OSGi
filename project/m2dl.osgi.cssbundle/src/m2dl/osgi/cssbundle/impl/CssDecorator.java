@@ -3,7 +3,7 @@ package m2dl.osgi.cssbundle.impl;
 import m2dl.osgi.apidecoratorbundle.LanguageDecoratorService;
 
 public class CssDecorator implements LanguageDecoratorService {
-	// Only some keywoards, we cnn add more
+	// Only some keywoards, we can add more
 	private static final String[] KEY_WORDS = 
 		{"color", "margin", "height", "image", "border", "max", "radius", 
 			"min", "position", "background", "width", "padding", "font", 

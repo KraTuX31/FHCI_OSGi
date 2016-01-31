@@ -16,6 +16,8 @@ public class Activator implements BundleActivator {
 		Dictionary<String, String> properties = new Hashtable<String, String>();
 		properties.put("type",  "good_property");
 		properties.put("name", "LanguageDecoratorService");
+		
+		// Declaration of JavaDecorator
 		context.registerService(JavaDecorator.class.getName(), new JavaDecorator(), properties);
 	}
 	
@@ -24,7 +26,7 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		System.out.println("Goodbye Java World!!");
+		
 	}
 
 }

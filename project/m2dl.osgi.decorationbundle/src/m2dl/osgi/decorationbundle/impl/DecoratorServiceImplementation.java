@@ -17,6 +17,12 @@ import m2dl.osgi.decorationbundle.activator.Activator;
 import m2dl.osgi.javabundle.JavaDecorator;
 
 public class DecoratorServiceImplementation implements DecoratorService {
+	/**
+	 * Read the file f and return an html string with syntaxic coloration
+	 * @param f The input file
+	 * @return An html string
+	 * @throws IOException If the fil is not found
+	 */
 	@Override
 	public String decorate(File f) throws IOException {
 		if (f != null) {
@@ -73,17 +79,29 @@ public class DecoratorServiceImplementation implements DecoratorService {
 	}
 	
 
+	/**
+	 * Start or stop css bundle
+	 */
 	@Override
 	public void toggleCss() {
 		toggleStatusBundle("css");		
 	}
 
+	/**
+	 * Start or stop java bundle
+	 */
 	@Override
 	public void toggleJava() {
 		toggleStatusBundle("java");		
 	}
 
 	
+	/**
+	 * Read a file line by line and return a string with markup <br/> instead of \n
+	 * @param f The input file
+	 * @return The string of file f
+	 * @throws IOException If the file is not found
+	 */
 	private static String fileToHtmlString(File f) throws IOException {
 	    BufferedReader br = new BufferedReader(new FileReader(f));
 	    String ret = "";
@@ -105,6 +123,10 @@ public class DecoratorServiceImplementation implements DecoratorService {
 	    return ret+"";	   
 	}
 
+	/**
+	 * start or stop a bundle with its name 
+	 * @param bundle A part of bundle name
+	 */
 	private void toggleStatusBundle(String bundle) {
 		Bundle b = getBundleByPartName(bundle);
 		if(b == null) {
@@ -125,6 +147,11 @@ public class DecoratorServiceImplementation implements DecoratorService {
 		}							
 	}
 
+	/**
+	 * Get a bundle with its name
+	 * @param bundleName Part of bundle name
+	 * @return The bundle or null if we can't find a bundle with this name
+	 */
 	private Bundle getBundleByPartName(String bundleName) {
 		for(Bundle b : Activator.context.getBundles()) {
 			String s = b.getSymbolicName();
@@ -135,9 +162,12 @@ public class DecoratorServiceImplementation implements DecoratorService {
 		return null;
 	}
 
-	public DecoratorServiceImplementation() {
-	}
-	
+	/**
+	 * Get the correct service implementation reference in bundle b 
+	 * @param impl The class name of implementation
+	 * @param b The bundle for the context
+	 * @return The service instanciation or null if not found
+	 */
 	public LanguageDecoratorService getLanguageDecorationService(Class<?> impl, Bundle b) {
 		ServiceReference<?>[] references;
 		try {

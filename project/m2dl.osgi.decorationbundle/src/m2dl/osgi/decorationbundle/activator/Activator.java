@@ -22,7 +22,9 @@ public class Activator implements BundleActivator {
 		Dictionary<String, String> properties = new Hashtable<String, String>();
 		properties.put("type",  "good_property");
 		properties.put("name", "DecoratorService");
-		Activator.context = context; 
+		Activator.context = context;
+		
+		// Declaration of DecoratorService		 
 		context.registerService(DecoratorService.class.getName(), new DecoratorServiceImplementation(), properties);
 	}
 	
@@ -31,7 +33,6 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#stop(org.osgi.framework.BundleContext)
 	 */
 	public void stop(BundleContext context) throws Exception {
-		System.out.println("you said Goodbye");
 	}
 
 }

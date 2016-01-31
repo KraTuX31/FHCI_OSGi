@@ -6,7 +6,6 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 import org.osgi.framework.Bundle;
-import org.osgi.framework.BundleContext;
 import org.osgi.framework.BundleException;
 import org.osgi.framework.InvalidSyntaxException;
 import org.osgi.framework.ServiceReference;
@@ -24,7 +23,6 @@ import javafx.stage.FileChooser;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import m2dl.osgi.decorationbundle.DecoratorService;
-
 
 public class CodeViewerController {
 	private DecoratorService deco;
@@ -119,7 +117,8 @@ public class CodeViewerController {
 	void fireMenuOpenFile(ActionEvent event) {
 		final FileChooser fileChooser = new FileChooser();
 		try {
-			String content = deco.decorate(fileChooser.showOpenDialog(primaryStage));
+			File f = fileChooser.showOpenDialog(primaryStage);
+			String content = deco.decorate(f);
 			WebEngine webEngine = webViewer.getEngine();
 			webEngine.loadContent(content);
 		
@@ -194,7 +193,7 @@ public class CodeViewerController {
 	}
 	
 
-	private void setDecoService() {
+	public void setDecoService() {
 		ServiceReference<?>[] references;
 		try {
 			references = Activator.context.getServiceReferences( DecoratorService.class.getName(), "(type=good_property)");
@@ -204,9 +203,5 @@ public class CodeViewerController {
 			// Today, it's dirty time. Exceptions, see you later.
 			e.printStackTrace();
 		}
-	}
-	
-	public CodeViewerController() {
-		setDecoService();
 	}
 }

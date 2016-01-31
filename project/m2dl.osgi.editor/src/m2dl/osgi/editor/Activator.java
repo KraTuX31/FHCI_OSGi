@@ -54,6 +54,7 @@ public class Activator implements BundleActivator {
 					final CodeViewerController controller = loader.getController();
 
 					controller.setPrimaryStage(primaryStage);
+					controller.setDecoService();
 					/*
 					 * Setup the window
 					 */

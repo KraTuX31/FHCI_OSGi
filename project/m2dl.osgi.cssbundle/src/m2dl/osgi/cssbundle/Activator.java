@@ -1,7 +1,13 @@
 package m2dl.osgi.cssbundle;
 
+import java.util.Dictionary;
+import java.util.Hashtable;
+
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
+
+import m2dl.osgi.apidecoratorbundle.LanguageDecoratorService;
+import m2dl.osgi.cssbundle.impl.CssDecorator;
 
 public class Activator implements BundleActivator {
 
@@ -10,7 +16,10 @@ public class Activator implements BundleActivator {
 	 * @see org.osgi.framework.BundleActivator#start(org.osgi.framework.BundleContext)
 	 */
 	public void start(BundleContext context) throws Exception {
-		System.out.println("Welcome to CSS world");
+		Dictionary<String, String> properties = new Hashtable<String, String>();
+		properties.put("type",  "good_property");
+		properties.put("name", "LanguageDecoratorService");
+		context.registerService(CssDecorator.class.getName(), new CssDecorator(), properties);
 	}
 	
 	/*

@@ -22,7 +22,7 @@ public class Activator implements BundleActivator {
 		Dictionary<String, String> properties = new Hashtable<String, String>();
 		properties.put("type",  "good_property");
 		properties.put("name", "DecoratorService");
-		this.context = context; 
+		Activator.context = context; 
 		context.registerService(DecoratorService.class.getName(), new DecoratorServiceImplementation(), properties);
 	}
 	

@@ -17,6 +17,8 @@ public class JavaDecorator implements LanguageDecoratorService {
 	
 	private static final String keyColor = "#7f0055";
 	private static final String commentColor = "grey";
+
+	private static final String quoteColor = "red";
 	 
 	private String key(String key) {
 		return key.replace(key, ":keyword{" + key + "}");
@@ -31,17 +33,22 @@ public class JavaDecorator implements LanguageDecoratorService {
 	public String htmlColorString(String raw) {
 		String ret = raw;
 		ret = ret.replaceAll(
-				":comment\\{(/\\*.*\\*/)\\}", 
+				":comment\\{(//[a-zA-Z0-9\\- ]+)\\}", 
 				"<font color=\""+commentColor+"\">$1</font>");
 
 		ret = ret.replaceAll(
 				":keyword\\{([a-zA-z0-9\\-@]+)\\}", 
 				"<b><font color=\""+keyColor+"\">$1</font></b>");
+
+		ret = ret.replaceAll(
+				":quote\\{(.+)\\}", 
+				"<i><font color=\""+quoteColor+"\">$1</font></i>");
 		return ret;
+		
 	}
 	
 	/**
-	 * Take a raw text in parameter, and return a text with markup keyword around keywords.
+	 * Take a raw text in para\\\\meter, and return a text with markup keyword around keywords.
 	 * @param raw The raw text
 	 * @return A text with keywords
 	 */
@@ -54,10 +61,12 @@ public class JavaDecorator implements LanguageDecoratorService {
 		}
 		
 		// Comments replacing
-		ret = ret.replaceAll("(//.*)", ":comment{$1}");
+		ret = ret.replaceAll("(//[a-zA-Z0-9\\- ]+)", ":comment{$1}");
 		
+		ret = ret.replaceAll("(\"[A-Za-z0-9\\- ]+\")", ":quote{$1}");
 		// TODO add multilines comments
-		ret = ret.replaceAll("(/\\*.*?\\*/)", ":comment{$1}");
+		ret = ret.replaceAll("(\\/\\*+((([^\\*])+)|([\\*]+(?!\\/)))[*]+\\/)", 
+				":comment{$1}");
 		return ret;
 	}
 

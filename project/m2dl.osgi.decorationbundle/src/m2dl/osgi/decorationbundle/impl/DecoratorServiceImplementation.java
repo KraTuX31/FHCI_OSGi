@@ -93,7 +93,7 @@ public class DecoratorServiceImplementation implements DecoratorService {
 
 	        while (line != null) {
 	            sb.append(line);
-	            sb.append("<br/>");
+	            sb.append("\n<br/>");
 	            line = br.readLine();
 	        }
 	        ret = sb.toString();

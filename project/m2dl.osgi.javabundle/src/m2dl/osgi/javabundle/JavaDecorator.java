@@ -5,7 +5,7 @@ import m2dl.osgi.apidecoratorbundle.LanguageDecoratorService;
 public class JavaDecorator implements LanguageDecoratorService {
 	// Only some keywoards, we cann add more
 	private static final String[] KEY_WORDS = 
-		{"package", "if", "while", "void", "return", "public", "private", "protected", "class", "enum"};
+		{"package", "import", "if", "while", "void", "return", "public", "private", "protected", "class", "enum"};
 	
 	 
 	private String key(String key) {
@@ -20,7 +20,7 @@ public class JavaDecorator implements LanguageDecoratorService {
 	@Override
 	public String htmlColorString(String raw) {
 		System.out.println("tata");
-		return null;
+		return raw;
 	}
 	
 	/**
@@ -30,13 +30,15 @@ public class JavaDecorator implements LanguageDecoratorService {
 	 */
 	@Override
 	public String rawTextToMarkupText(String raw) {
-		String ret = "";
+		String ret = raw;
 		for(String s : KEY_WORDS) {
 			ret = ret.replace(s, key(s));
 		}
 		
 		// Comments replacing
-		ret = ret.replaceAll("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)|(?://.*)", ":comment{$1}");
+		ret = ret.replaceAll("(//.*)", ":comment{$1}");
+		
+		// TODO add multilines comments
 		return ret;
 	}
 

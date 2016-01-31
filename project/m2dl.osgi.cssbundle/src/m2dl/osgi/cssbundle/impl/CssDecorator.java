@@ -18,8 +18,7 @@ public class CssDecorator implements LanguageDecoratorService {
 	 */
 	@Override
 	public String htmlColorString(String markupString) {
-		System.out.println("toto");
-		return null;
+		return markupString;
 	}
 	
 	/**
@@ -29,13 +28,13 @@ public class CssDecorator implements LanguageDecoratorService {
 	 */
 	@Override
 	public String rawTextToMarkupText(String raw) {
-		String ret = "";
+		String ret = raw;
 		for(String s : KEY_WORDS) {
 			ret = ret.replace(s, key(s));
 		}
 		
 		// Comments replacing
-		ret = ret.replaceAll("(?:/\\*(?:[^*]|(?:\\*+[^*/]))*\\*+/)", ":comment{$1}");
+		// TODO add multine comments
 		return ret;
 	}
 

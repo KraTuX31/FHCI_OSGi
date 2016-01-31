@@ -22,9 +22,9 @@ public class CssDecorator implements LanguageDecoratorService {
 	@Override
 	public String htmlColorString(String markupString) {
 		String ret = markupString;
-		ret = ret.replaceAll(":comment\\{(/\\*.*\\*/)\\}", "<font color=\""+commentColor+"\">$1</font>");
+		ret = ret.replaceAll(":comment\\{(/\\*\\*/)\\}", "<font color=\""+commentColor+"\">$1</font>");
 
-		ret = ret.replaceAll(":keyword\\{([a-zA-z0-9\\-@]+)\\}", "<b><font color=\""+keyColor+"\">$1</font></b>");
+		ret = ret.replaceAll(":keyword\\{([a-zA-Z-9\\-@]+)\\}", "<b><font color=\""+keyColor+"\">$1</font></b>");
 		return ret
 				;
 	}

@@ -7,7 +7,11 @@ import java.io.IOException;
 
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
+import org.osgi.framework.InvalidSyntaxException;
+import org.osgi.framework.ServiceReference;
 
+import m2dl.osgi.apidecoratorbundle.LanguageDecoratorService;
+import m2dl.osgi.cssbundle.impl.CssDecorator;
 import m2dl.osgi.decorationbundle.DecoratorService;
 import m2dl.osgi.decorationbundle.activator.Activator;
 
@@ -24,12 +28,19 @@ public class DecoratorServiceImplementation implements DecoratorService {
 		String markupContent = null;;
 		if(f.getAbsolutePath().toLowerCase().endsWith(".java")) { // Java file !
 			Bundle b  = getBundleByPartName("java");
+			if(b!= null) {
+				LanguageDecoratorService service = getLanguageDecorationService(null, b);
+			}
 			// TODO call java decorator
 		} 
 		
 		if(f.getAbsolutePath().toLowerCase().endsWith(".css")) { // css file
 			Bundle b  = getBundleByPartName("css");
 			// TODO call css decorator
+			if(b!= null) {
+				LanguageDecoratorService service = getLanguageDecorationService(CssDecorator.class, b);
+				service.htmlColorString(rawContent);
+			}
 		} 
 		
 		 // Other file
@@ -117,4 +128,18 @@ public class DecoratorServiceImplementation implements DecoratorService {
 		return null;
 	}
 
+	public DecoratorServiceImplementation() {
+	}
+	
+	public LanguageDecoratorService getLanguageDecorationService(Class<?> impl, Bundle b) {
+		ServiceReference<?>[] references;
+		try {
+			references = b.getBundleContext().getServiceReferences( impl.getName(), "(type=good_property)");
+			return (( LanguageDecoratorService) Activator.context.getService(references[0]));
+		} catch (InvalidSyntaxException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
 }
